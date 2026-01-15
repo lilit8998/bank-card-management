@@ -1,0 +1,51 @@
+spring:
+  application:
+    name: bankmanagment
+  datasource:
+    url: jdbc:postgresql://localhost:5433/bank_db
+    username: bank_user
+    password: bank_pass
+    driver-class-name: org.postgresql.Driver
+  jpa:
+    generate-ddl: false
+    properties:
+      hibernate:
+        format_sql: true
+    database: postgresql
+    database-platform: org.hibernate.dialect.PostgreSQLDialect
+  liquibase:
+    change-log: classpath:db/liquibase-changelog.xml
+    enabled: true
+  servlet:
+    multipart:
+      enabled: true
+      max-request-size: 10MB
+      max-file-size: 10MB
+  web:
+    resources:
+      static-locations: file:uploads/
+server:
+  port: 8081
+
+jwt:
+  secret: bank-card-management-secret-key-for-jwt-token-generation-2024-minimum-256-bits
+  expiration: 86400000
+
+encryption:
+  secret: bank-card-secret-key-2024-minimum-32-characters-for-aes-256
+
+springdoc:
+  api-docs:
+    path: /v3/api-docs
+    enabled: true
+  swagger-ui:
+    path: /swagger-ui.html
+    enabled: true
+  show-actuator: false
+  use-management-port: false
+
+logging:
+  level:
+    org.springframework.security.config.annotation.authentication.configuration.InitializeUserDetailsBeanManagerConfigurer: error
+    org.springframework.web: INFO
+    bank.card.management: DEBUG
