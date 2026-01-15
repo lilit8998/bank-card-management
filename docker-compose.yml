@@ -1,0 +1,36 @@
+services:
+  postgres:
+    image: postgres:17
+    container_name: bank-postgres
+    environment:
+      POSTGRES_USER: bank_user
+      POSTGRES_PASSWORD: bank_pass
+      POSTGRES_DB: bank_db
+    ports:
+      - "5433:5432"
+    volumes:
+      - bank-pgdata:/var/lib/postgresql/data
+    networks:
+      - bank-network
+    restart: unless-stopped
+
+  backend:
+    build: .
+    container_name: bank-backend
+    depends_on:
+      - postgres
+    ports:
+      - "7404:7404"
+    environment:
+      JAVA_OPTS: "-Xmx512m"
+      SPRING_DATASOURCE_URL: jdbc:postgresql://postgres:5432/bank_db
+      SPRING_DATASOURCE_USERNAME: bank_user
+      SPRING_DATASOURCE_PASSWORD: bank_pass
+    networks:
+      - bank-network
+
+volumes:
+  bank-pgdata:
+
+networks:
+  bank-network:
